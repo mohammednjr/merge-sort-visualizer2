@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merge Sort — Interactive Teaching Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3a;
+    --accent: #7c6fff;
+    --accent2: #ff6b9d;
+    --green: #3fffa2;
+    --amber: #ffcc5c;
+    --text: #e8e8f0;
+    --muted: #7878a0;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; overflow-x: hidden; }
+
+  /* grid background */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; }
+
+  /* header */
+  header { margin-bottom: 2.5rem; }
+  .tag { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; }
+  h1 { font-family: var(--mono); font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 700; letter-spacing: -1px; line-height: 1.1; }
+  h1 span { color: var(--accent); }
+  .subtitle { font-size: 15px; color: var(--muted); margin-top: 0.75rem; max-width: 520px; line-height: 1.6; }
+
+  /* controls */
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2rem; align-items: center; }
+  .btn {
+    font-family: var(--mono); font-size: 12px; padding: 8px 18px;
+    border: 1px solid var(--border); border-radius: 4px;
+    cursor: pointer; transition: all 0.15s; letter-spacing: 1px;
+    background: transparent; color: var(--text);
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #0a0a0f; font-weight: 700; }
+  .btn.primary:hover { background: #9a88ff; border-color: #9a88ff; }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .speed-wrap { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .speed-wrap label { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+  input[type=range] { accent-color: var(--accent); width: 80px; }
+  .input-wrap { display: flex; align-items: center; gap: 8px; }
+  .input-wrap label { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+  input[type=text] {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+    color: var(--text); font-family: var(--mono); font-size: 12px;
+    padding: 7px 12px; width: 200px;
+  }
+  input[type=text]:focus { outline: none; border-color: var(--accent); }
+
+  /* array display */
+  .array-section { margin-bottom: 2rem; }
+  .section-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.75rem; }
+  .bars-wrap { display: flex; align-items: flex-end; gap: 6px; height: 160px; padding: 0 4px; }
+  .bar {
+    flex: 1; border-radius: 3px 3px 0 0;
+    transition: height 0.3s ease, background 0.3s ease;
+    position: relative; min-width: 20px; max-width: 60px;
+    display: flex; align-items: flex-start; justify-content: center;
+  }
+  .bar .bar-val {
+    font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.6);
+    padding-top: 4px; user-select: none;
+  }
+  .bar.default { background: var(--surface2); border: 1px solid var(--border); }
+  .bar.active { background: var(--accent); border-color: var(--accent); }
+  .bar.comparing { background: var(--amber); border-color: var(--amber); }
+  .bar.merging { background: var(--accent2); border-color: var(--accent2); }
+  .bar.sorted { background: var(--green); border-color: var(--green); }
+
+  /* recursion tree */
+  .tree-section { margin-bottom: 2rem; }
+  #tree-canvas { width: 100%; height: 280px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; display: block; }
+
+  /* step log */
+  .log-section { margin-bottom: 2rem; }
+  .log-box {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+    padding: 1rem; height: 140px; overflow-y: auto; font-family: var(--mono); font-size: 12px;
+  }
+  .log-entry { padding: 3px 0; border-bottom: 1px solid var(--border); line-height: 1.6; }
+  .log-entry:last-child { border-bottom: none; }
+  .log-entry .step-num { color: var(--muted); margin-right: 8px; }
+  .log-entry.highlight { color: var(--accent); }
+  .log-entry.merge-log { color: var(--accent2); }
+  .log-entry.done-log { color: var(--green); }
+
+  /* info cards */
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 2rem; }
+  .info-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+  .info-card .ic-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .info-card .ic-val { font-family: var(--mono); font-size: 1.4rem; font-weight: 700; }
+  .info-card .ic-val.accent { color: var(--accent); }
+  .info-card .ic-val.green { color: var(--green); }
+  .info-card .ic-val.amber { color: var(--amber); }
+  .info-card .ic-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* explainer */
+  .explainer { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; margin-bottom: 2rem; }
+  .explainer h3 { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-bottom: 0.75rem; }
+  .explainer p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .explainer strong { color: var(--text); }
+
+  /* phase indicator */
+  .phase-bar { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .phase-pill {
+    font-family: var(--mono); font-size: 11px; padding: 5px 12px;
+    border-radius: 20px; border: 1px solid var(--border);
+    color: var(--muted); letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+  .phase-pill.active { border-color: var(--accent); color: var(--accent); background: rgba(124,111,255,0.1); }
+  .phase-pill.done { border-color: var(--green); color: var(--green); background: rgba(63,255,162,0.07); }
+
+  /* merge step visual */
+  .merge-visual { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; margin-bottom: 2rem; min-height: 80px; }
+  .merge-visual h3 { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.75rem; }
+  .merge-arrays { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-start; }
+  .arr-label { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .arr-cells { display: flex; gap: 4px; }
+  .arr-cell {
+    width: 32px; height: 32px; border-radius: 4px; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    background: var(--surface2); color: var(--text);
+    transition: all 0.2s;
+  }
+  .arr-cell.ptr { border-color: var(--accent); color: var(--accent); background: rgba(124,111,255,0.15); }
+  .arr-cell.taken { opacity: 0.3; }
+  .arr-cell.result-cell { background: rgba(63,255,162,0.1); border-color: var(--green); color: var(--green); }
+  .merge-arrow { font-size: 20px; color: var(--muted); align-self: center; margin-top: 20px; }
+
+  footer { border-top: 1px solid var(--border); padding-top: 1rem; font-family: var(--mono); font-size: 11px; color: var(--muted); text-align: center; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="tag">BCS 309 · Algorithms I · Spring 2026</div>
+    <h1>Merge<span>Sort</span></h1>
+    <p class="subtitle">An interactive tool for learning divide-and-conquer sorting. Watch the algorithm split, recurse, and merge — step by step.</p>
+  </header>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="ic-label">Time complexity</div>
+      <div class="ic-val accent">O(n log n)</div>
+      <div class="ic-sub">Best · Average · Worst</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-label">Space complexity</div>
+      <div class="ic-val amber">O(n)</div>
+      <div class="ic-sub">Temporary merge arrays</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-label">Stable?</div>
+      <div class="ic-val green">Yes</div>
+      <div class="ic-sub">Preserves equal-element order</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-label">Comparisons</div>
+      <div class="ic-val accent" id="cmp-count">0</div>
+      <div class="ic-sub">Made so far</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="input-wrap">
+      <label>ARRAY</label>
+      <input type="text" id="arr-input" value="38, 27, 43, 3, 9, 82, 10" placeholder="e.g. 5, 2, 8, 1, 9">
+    </div>
+    <button class="btn" onclick="randomize()">RANDOM</button>
+    <button class="btn primary" id="btn-start" onclick="startSort()">RUN ▶</button>
+    <button class="btn" id="btn-step" onclick="stepForward()" disabled>STEP →</button>
+    <button class="btn" id="btn-reset" onclick="reset()">RESET</button>
+    <div class="speed-wrap">
+      <label>SPEED</label>
+      <input type="range" id="speed" min="1" max="10" value="5">
+    </div>
+  </div>
+
+  <div class="phase-bar" id="phase-bar">
+    <div class="phase-pill active" id="ph-idle">IDLE</div>
+    <div class="phase-pill" id="ph-split">SPLITTING</div>
+    <div class="phase-pill" id="ph-merge">MERGING</div>
+    <div class="phase-pill" id="ph-done">SORTED</div>
+  </div>
+
+  <div class="array-section">
+    <div class="section-label">Array state</div>
+    <div class="bars-wrap" id="bars-wrap"></div>
+  </div>
+
+  <div class="merge-visual" id="merge-visual">
+    <h3>Current merge operation</h3>
+    <p style="font-size:13px; color: var(--muted);">Run the algorithm to see the merge step visualized here.</p>
+  </div>
+
+  <div class="tree-section">
+    <div class="section-label">Recursion tree</div>
+    <canvas id="tree-canvas"></canvas>
+  </div>
+
+  <div class="log-section">
+    <div class="section-label">Step log</div>
+    <div class="log-box" id="log-box"></div>
+  </div>
+
+  <div class="explainer">
+    <h3>// HOW IT WORKS</h3>
+    <p>
+      <strong>Divide:</strong> Split the array in half recursively until each subarray has 1 element (trivially sorted).<br><br>
+      <strong>Conquer:</strong> Merge pairs of sorted subarrays. Use two pointers — one per half. Always pick the smaller front element. When one half is exhausted, append the rest of the other.<br><br>
+      <strong>Why O(n log n)?</strong> There are <strong>log n levels</strong> of recursion (we halve each time). At each level, we do <strong>O(n) work</strong> in the merge step (every element is touched once). Total: n × log n.
+    </p>
+  </div>
+
+  <footer>MERGE SORT VISUALIZER · BCS 309 ALGORITHMS I</footer>
+</div>
+
+<script>
+let arr = [], steps = [], stepIdx = 0, animTimer = null, cmpCount = 0, running = false;
+
+function parseArr() {
+  return arr_input.value.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+}
+
+function randomize() {
+  const n = 7 + Math.floor(Math.random() * 5);
+  arr_input.value = Array.from({length: n}, () => 1 + Math.floor(Math.random() * 99)).join(', ');
+  reset();
+}
+
+function reset() {
+  clearTimeout(animTimer);
+  steps = []; stepIdx = 0; cmpCount = 0; running = false;
+  document.getElementById('cmp-count').textContent = '0';
+  document.getElementById('btn-start').disabled = false;
+  document.getElementById('btn-step').disabled = true;
+  document.getElementById('btn-start').textContent = 'RUN ▶';
+  setPhase('idle');
+  const a = parseArr();
+  renderBars(a, a.map(() => 'default'));
+  clearLog();
+  renderTree([]);
+  clearMergeVisual();
+}
+
+function setPhase(p) {
+  ['idle','split','merge','done'].forEach(x => {
+    document.getElementById('ph-' + x).classList.remove('active', 'done');
+  });
+  document.getElementById('ph-' + p).classList.add('active');
+  if (p === 'done') {
+    ['split','merge'].forEach(x => document.getElementById('ph-' + x).classList.add('done'));
+  }
+}
+
+// Generate all steps
+function generateSteps(a) {
+  const s = [];
+  const orig = [...a];
+  function ms(arr, l, r) {
+    if (l >= r) return;
+    const m = Math.floor((l + r) / 2);
+    s.push({type:'split', l, m, r, arr:[...arr]});
+    ms(arr, l, m);
+    ms(arr, m+1, r);
+    // merge
+    const left = arr.slice(l, m+1);
+    const right = arr.slice(m+1, r+1);
+    let i=0, j=0, k=l;
+    const result = [];
+    s.push({type:'merge-start', l, m, r, left:[...left], right:[...right], arr:[...arr]});
+    while (i < left.length && j < right.length) {
+      s.push({type:'compare', l, m, r, left:[...left], right:[...right], li:i, ri:j, result:[...result], arr:[...arr]});
+      if (left[i] <= right[j]) {
+        arr[k++] = left[i];
+        result.push(left[i]);
+        i++;
+      } else {
+        arr[k++] = right[j];
+        result.push(right[j]);
+        j++;
+      }
+    }
+    while (i < left.length) { arr[k++] = left[i]; result.push(left[i]); i++; }
+    while (j < right.length) { arr[k++] = right[j]; result.push(right[j]); j++; }
+    s.push({type:'merged', l, m, r, left:[...left], right:[...right], result:[...result], arr:[...arr]});
+  }
+  const work = [...a];
+  ms(work, 0, a.length-1);
+  s.push({type:'done', arr:[...work]});
+  return s;
+}
+
+function startSort() {
+  const a = parseArr();
+  if (!a.length) return;
+  arr = a;
+  steps = generateSteps([...a]);
+  stepIdx = 0; cmpCount = 0;
+  document.getElementById('cmp-count').textContent = '0';
+  document.getElementById('btn-start').disabled = true;
+  document.getElementById('btn-step').disabled = false;
+  clearLog();
+  renderTree([]);
+  autoPlay();
+}
+
+function autoPlay() {
+  running = true;
+  const speed = 11 - parseInt(document.getElementById('speed').value);
+  const delay = speed * 80;
+  function next() {
+    if (stepIdx >= steps.length) { running = false; return; }
+    applyStep(steps[stepIdx]);
+    stepIdx++;
+    animTimer = setTimeout(next, delay);
+  }
+  next();
+}
+
+function stepForward() {
+  if (stepIdx >= steps.length) return;
+  clearTimeout(animTimer);
+  running = false;
+  applyStep(steps[stepIdx]);
+  stepIdx++;
+}
+
+function applyStep(step) {
+  const n = arr.length;
+  const colors = arr.map(() => 'default');
+
+  if (step.type === 'split') {
+    setPhase('split');
+    for (let i = step.l; i <= step.r; i++) colors[i] = 'active';
+    renderBars(step.arr, colors);
+    addLog(`Split [${step.l}..${step.r}] → [${step.l}..${step.m}] and [${step.m+1}..${step.r}]`, 'highlight');
+    renderTree(steps.slice(0, stepIdx+1));
+    clearMergeVisual();
+  } else if (step.type === 'merge-start') {
+    setPhase('merge');
+    for (let i = step.l; i <= step.r; i++) colors[i] = 'merging';
+    renderBars(step.arr, colors);
+    addLog(`Merge [${step.l}..${step.m}] + [${step.m+1}..${step.r}]`, 'merge-log');
+    showMergeVisual(step.left, step.right, [], 0, 0);
+  } else if (step.type === 'compare') {
+    cmpCount++;
+    document.getElementById('cmp-count').textContent = cmpCount;
+    for (let i = step.l; i <= step.r; i++) colors[i] = 'comparing';
+    renderBars(step.arr, colors);
+    addLog(`Compare ${step.left[step.li]} vs ${step.right[step.ri]} → take ${step.left[step.li] <= step.right[step.ri] ? step.left[step.li] : step.right[step.ri]}`, '');
+    showMergeVisual(step.left, step.right, step.result, step.li, step.ri);
+  } else if (step.type === 'merged') {
+    for (let i = step.l; i <= step.r; i++) colors[i] = 'merging';
+    renderBars(step.arr, colors);
+    addLog(`Merged → [${step.result.join(', ')}]`, 'merge-log');
+    showMergeVisual(step.left, step.right, step.result, -1, -1);
+  } else if (step.type === 'done') {
+    setPhase('done');
+    renderBars(step.arr, step.arr.map(() => 'sorted'));
+    addLog('Array fully sorted!', 'done-log');
+    document.getElementById('btn-step').disabled = true;
+    clearMergeVisual();
+    renderTree(steps);
+  }
+}
+
+function renderBars(a, colors) {
+  const wrap = document.getElementById('bars-wrap');
+  const max = Math.max(...a, 1);
+  wrap.innerHTML = a.map((v, i) => `
+    <div class="bar ${colors[i]}" style="height:${Math.max(10, Math.round(v/max*140))}px">
+      <span class="bar-val">${v}</span>
+    </div>`).join('');
+}
+
+function showMergeVisual(left, right, result, li, ri) {
+  const mv = document.getElementById('merge-visual');
+  const leftCells = left.map((v, i) => `<div class="arr-cell ${i === li ? 'ptr' : i < (result.length - (ri >= 0 ? right.slice(0, ri).filter((_,j) => j < result.length - left.slice(0,li).length).length : 0) - li) ? 'taken' : ''}">${v}</div>`).join('');
+  const rightCells = right.map((v, i) => `<div class="arr-cell ${i === ri ? 'ptr' : ''}">${v}</div>`).join('');
+  const resultCells = result.map(v => `<div class="arr-cell result-cell">${v}</div>`).join('');
+
+  mv.innerHTML = `
+    <h3>Current merge operation</h3>
+    <div class="merge-arrays">
+      <div>
+        <div class="arr-label">LEFT HALF</div>
+        <div class="arr-cells">${left.map((v,i)=>`<div class="arr-cell ${i===li?'ptr':i<li?'taken':''}">${v}</div>`).join('')}</div>
+      </div>
+      <div class="merge-arrow">+</div>
+      <div>
+        <div class="arr-label">RIGHT HALF</div>
+        <div class="arr-cells">${right.map((v,i)=>`<div class="arr-cell ${i===ri?'ptr':i<ri?'taken':''}">${v}</div>`).join('')}</div>
+      </div>
+      <div class="merge-arrow">→</div>
+      <div>
+        <div class="arr-label">RESULT</div>
+        <div class="arr-cells">${result.length ? result.map(v=>`<div class="arr-cell result-cell">${v}</div>`).join('') : '<span style="font-size:12px;color:var(--muted)">building...</span>'}</div>
+      </div>
+    </div>`;
+}
+
+function clearMergeVisual() {
+  document.getElementById('merge-visual').innerHTML = `<h3>Current merge operation</h3><p style="font-size:13px;color:var(--muted)">Run the algorithm to see the merge step visualized here.</p>`;
+}
+
+let logCount = 0;
+function addLog(msg, cls) {
+  logCount++;
+  const box = document.getElementById('log-box');
+  const el = document.createElement('div');
+  el.className = 'log-entry ' + cls;
+  el.innerHTML = `<span class="step-num">${String(logCount).padStart(3,'0')}</span>${msg}`;
+  box.appendChild(el);
+  box.scrollTop = box.scrollHeight;
+}
+function clearLog() { logCount = 0; document.getElementById('log-box').innerHTML = ''; }
+
+// Recursion tree
+function renderTree(allSteps) {
+  const canvas = document.getElementById('tree-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth * devicePixelRatio;
+  const H = canvas.offsetHeight * devicePixelRatio;
+  canvas.width = W; canvas.height = H;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  const cw = canvas.offsetWidth, ch = canvas.offsetHeight;
+  ctx.clearRect(0, 0, cw, ch);
+
+  const a = parseArr();
+  if (!a.length) return;
+
+  // build tree nodes
+  const nodes = [];
+  function build(l, r, depth, x, xmin, xmax) {
+    if (l > r) return;
+    const node = {l, r, depth, x, y: 30 + depth * 60};
+    nodes.push(node);
+    if (l < r) {
+      const m = Math.floor((l+r)/2);
+      const lx = (xmin + x) / 2;
+      const rx = (x + xmax) / 2;
+      build(l, m, depth+1, lx, xmin, x);
+      build(m+1, r, depth+1, rx, x, xmax);
+    }
+  }
+  build(0, a.length-1, 0, cw/2, 0, cw);
+
+  // determine which nodes are active/done from steps
+  const splitDone = new Set(), mergeDone = new Set();
+  for (const s of allSteps) {
+    if (s.type === 'split') splitDone.add(`${s.l}-${s.r}`);
+    if (s.type === 'merged' || s.type === 'done') mergeDone.add(`${s.l}-${s.r}`);
+  }
+
+  // draw edges
+  for (const node of nodes) {
+    if (node.l < node.r) {
+      const m = Math.floor((node.l + node.r)/2);
+      const left = nodes.find(n => n.l === node.l && n.r === m && n.depth === node.depth+1);
+      const right = nodes.find(n => n.l === m+1 && n.r === node.r && n.depth === node.depth+1);
+      ctx.strokeStyle = '#2a2a3a';
+      ctx.lineWidth = 1;
+      if (left) { ctx.beginPath(); ctx.moveTo(node.x, node.y); ctx.lineTo(left.x, left.y); ctx.stroke(); }
+      if (right) { ctx.beginPath(); ctx.moveTo(node.x, node.y); ctx.lineTo(right.x, right.y); ctx.stroke(); }
+    }
+  }
+
+  // draw nodes
+  for (const node of nodes) {
+    const key = `${node.l}-${node.r}`;
+    let fill = '#1a1a26', stroke = '#2a2a3a', textCol = '#7878a0';
+    if (mergeDone.has(key)) { fill = 'rgba(63,255,162,0.15)'; stroke = '#3fffa2'; textCol = '#3fffa2'; }
+    else if (splitDone.has(key)) { fill = 'rgba(124,111,255,0.15)'; stroke = '#7c6fff'; textCol = '#7c6fff'; }
+    const label = a.slice(node.l, node.r+1).join(',');
+    const w = Math.max(36, label.length * 8 + 16);
+    ctx.fillStyle = fill;
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(node.x - w/2, node.y - 14, w, 28, 4);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = textCol;
+    ctx.font = `700 11px 'Space Mono', monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, node.x, node.y);
+  }
+}
+
+// init
+window.addEventListener('load', () => {
+  reset();
+  window.addEventListener('resize', () => { if (!running) renderTree([]); });
+});
+
+const arr_input = document.getElementById('arr-input');
+arr_input.addEventListener('input', reset);
+</script>
+</body>
+</html>
