@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Merge Sort — Navy & Cyan Theme | Interactive Teaching Tool</title>
+<title>Merge Sort — Navy & Cyan | Live Animation</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a1628;        /* deep navy */
+    --bg: #0a1628;
     --surface: #0f1a2f;
     --surface2: #14203b;
     --border: #1e3a5f;
@@ -28,9 +28,7 @@
   body::before {
     content: '';
     position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(0, 240, 255, 0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 240, 255, 0.025) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(0, 240, 255, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.025) 1px, transparent 1px);
     background-size: 36px 36px;
     pointer-events: none; z-index: 0;
   }
@@ -44,7 +42,6 @@
   .subtitle { font-size: 12px; color: var(--muted); margin-top: 0.5rem; font-family: var(--mono); }
   .header-badge { font-family: var(--mono); font-size: 10px; border: 1px solid var(--cyan); color: var(--cyan); padding: 6px 14px; border-radius: 2px; letter-spacing: 2px; white-space: nowrap; background: rgba(0,240,255,0.05); }
 
-  /* CORE IDEA */
   .core-idea { background: var(--surface); border-left: 3px solid var(--cyan); padding: 1.25rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
   .core-idea-label { font-family: var(--mono); font-size: 9px; color: var(--cyan); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 0.75rem; }
   .core-idea-text { font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.9; margin-bottom: 1rem; }
@@ -56,7 +53,6 @@
   .pillar-title { font-family: var(--mono); font-size: 11px; color: var(--white); font-weight: 700; margin-bottom: 4px; }
   .pillar-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
 
-  /* STATS */
   .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 1.5rem; }
   .info-card { background: var(--surface); padding: 0.9rem 1rem; }
   .ic-label { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
@@ -65,7 +61,6 @@
   .ic-val.red { color: var(--cyan); text-shadow: 0 0 3px rgba(0,240,255,0.3); }
   .ic-sub { font-size: 10px; color: var(--muted2); margin-top: 3px; font-family: var(--mono); }
 
-  /* CONTROLS */
   .controls { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center; }
   .btn { font-family: var(--mono); font-size: 11px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 2px; cursor: pointer; transition: all 0.2s; letter-spacing: 1px; background: transparent; color: var(--muted); }
   .btn:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,240,255,0.05); }
@@ -80,29 +75,26 @@
   input[type=text] { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; color: var(--white); font-family: var(--mono); font-size: 12px; padding: 7px 12px; width: 210px; }
   input[type=text]:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 5px rgba(0,240,255,0.3); }
 
-  /* PHASE */
   .phase-bar { display: flex; gap: 0; margin-bottom: 1.5rem; flex-wrap: wrap; }
   .phase-pill { font-family: var(--mono); font-size: 10px; padding: 5px 14px; border: 1px solid var(--border); color: var(--muted2); letter-spacing: 2px; transition: all 0.2s; margin-right: -1px; }
   .phase-pill.active { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-glow); z-index: 1; position: relative; text-shadow: 0 0 2px rgba(0,240,255,0.5); }
   .phase-pill.done { border-color: var(--muted); color: var(--muted); }
 
-  /* BARS */
   .section-label { font-family: var(--mono); font-size: 9px; color: var(--cyan); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 0.6rem; }
   .array-section { margin-bottom: 1.5rem; }
   .bars-wrap { display: flex; align-items: flex-end; gap: 4px; height: 150px; padding: 0 2px; }
-  .bar { flex: 1; border-radius: 1px 1px 0 0; transition: height 0.25s, background 0.2s; position: relative; min-width: 18px; max-width: 55px; display: flex; align-items: flex-start; justify-content: center; }
-  .bar .bar-val { font-family: var(--mono); font-size: 9px; color: rgba(210,230,255,0.5); padding-top: 3px; user-select: none; }
+  .bar { flex: 1; border-radius: 1px 1px 0 0; transition: height 0.2s ease, background 0.15s ease; position: relative; min-width: 18px; max-width: 55px; display: flex; align-items: flex-start; justify-content: center; cursor: pointer; }
+  .bar .bar-val { font-family: var(--mono); font-size: 9px; color: rgba(210,230,255,0.6); padding-top: 3px; user-select: none; }
   .bar.default { background: #111f32; border: 1px solid var(--border); }
   .bar.active { background: rgba(0, 240, 255, 0.15); border: 1px solid var(--cyan); box-shadow: 0 0 6px rgba(0,240,255,0.2); }
-  .bar.comparing { background: var(--cyan-glow); border: 1px solid var(--cyan); box-shadow: 0 0 10px rgba(0,240,255,0.3); }
-  .bar.merging { background: rgba(0, 180, 200, 0.1); border: 1px solid var(--cyan-dim); }
-  .bar.sorted { background: rgba(0, 240, 255, 0.2); border: 1px solid var(--cyan-bright); box-shadow: 0 0 4px rgba(0,240,255,0.2); }
+  .bar.comparing { background: var(--cyan-glow); border: 1px solid var(--cyan); box-shadow: 0 0 10px rgba(0,240,255,0.3); animation: pulse 0.5s ease-in-out; }
+  @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+  .bar.merging { background: rgba(0, 180, 200, 0.15); border: 1px solid var(--cyan-dim); }
+  .bar.sorted { background: rgba(0, 240, 255, 0.2); border: 1px solid var(--cyan-bright); box-shadow: 0 0 6px rgba(0,240,255,0.2); }
 
-  /* TWO COL */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 1.5rem; }
   @media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
 
-  /* CODE */
   .code-panel { background: var(--surface); overflow: hidden; }
   .panel-header { padding: 8px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; background: var(--surface2); }
   .panel-title { font-family: var(--mono); font-size: 10px; color: var(--cyan); letter-spacing: 2px; text-transform: uppercase; }
@@ -117,26 +109,22 @@
   .code-line { display: block; padding: 0 4px; border-radius: 1px; transition: background 0.15s, color 0.15s; }
   .code-line.lit { background: var(--cyan-glow); border-left: 2px solid var(--cyan); padding-left: 6px; color: var(--white); }
   .code-line.lit .kw, .code-line.lit .fn, .code-line.lit .nm { color: var(--cyan-bright) !important; }
-  .code-line.lit .cm { color: var(--cyan-dim) !important; }
 
-  /* MERGE VISUAL */
   .merge-panel { background: var(--surface); overflow: hidden; }
   .merge-panel-body { padding: 1rem; min-height: 190px; }
-  .merge-arrays { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start; }
+  .merge-arrays { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start; justify-content: center; }
   .arr-group { }
-  .arr-label { font-family: var(--mono); font-size: 9px; color: var(--cyan); letter-spacing: 2px; margin-bottom: 5px; }
-  .arr-cells { display: flex; gap: 3px; flex-wrap: wrap; }
-  .arr-cell { width: 30px; height: 30px; border-radius: 2px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 700; background: var(--surface2); color: var(--muted); transition: all 0.15s; }
-  .arr-cell.ptr { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-glow); box-shadow: 0 0 6px rgba(0,240,255,0.4); }
-  .arr-cell.taken { opacity: 0.15; }
-  .arr-cell.result-cell { background: rgba(0, 240, 255, 0.12); border-color: var(--cyan); color: var(--cyan-bright); }
-  .merge-op { font-family: var(--mono); font-size: 16px; color: var(--cyan-dim); align-self: center; margin-top: 18px; }
+  .arr-label { font-family: var(--mono); font-size: 9px; color: var(--cyan); letter-spacing: 2px; margin-bottom: 5px; text-align: center; }
+  .arr-cells { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
+  .arr-cell { width: 32px; height: 32px; border-radius: 2px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 700; background: var(--surface2); color: var(--muted); transition: all 0.1s ease; }
+  .arr-cell.ptr { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-glow); box-shadow: 0 0 8px rgba(0,240,255,0.5); transform: scale(1.05); }
+  .arr-cell.taken { opacity: 0.2; background: var(--muted2); }
+  .arr-cell.result-cell { background: rgba(0, 240, 255, 0.15); border-color: var(--cyan); color: var(--cyan-bright); }
+  .merge-op { font-family: var(--mono); font-size: 18px; color: var(--cyan-dim); align-self: center; margin-top: 18px; }
 
-  /* TREE */
   .tree-section { margin-bottom: 1.5rem; }
   #tree-canvas { width: 100%; height: 260px; background: var(--surface); border: 1px solid var(--border); display: block; border-radius: 2px; }
 
-  /* LOG */
   .log-section { margin-bottom: 1.5rem; }
   .log-box { background: var(--surface); border: 1px solid var(--border); padding: 0.75rem 1rem; height: 130px; overflow-y: auto; font-family: var(--mono); font-size: 11px; }
   .log-entry { padding: 2px 0; border-bottom: 1px solid #1a2a3e; line-height: 1.6; color: var(--muted); }
@@ -154,12 +142,11 @@
 </head>
 <body>
 <div class="container">
-
   <header>
     <div class="header-left">
       <div class="tag">BCS 309 · Algorithms I · Spring 2026</div>
       <h1>MERGE<span>SORT</span></h1>
-      <p class="subtitle">// divide. conquer. merge. [navy & cyan]</p>
+      <p class="subtitle">// divide. conquer. merge. [live animation]</p>
     </div>
     <div class="header-badge">INTERACTIVE TOOL</div>
   </header>
@@ -172,61 +159,27 @@
       At every merge, always pick the <span class="hl">smaller front element</span> — this guarantees a sorted result every time.
     </div>
     <div class="core-pillars">
-      <div class="pillar">
-        <div class="pillar-num">01 // DIVIDE</div>
-        <div class="pillar-desc">Split in half recursively until every piece has 1 element. A single element is trivially sorted.</div>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">02 // CONQUER</div>
-        <div class="pillar-desc">Base case reached. Single elements need no sorting — recursion bottoms out and returns.</div>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">03 // MERGE</div>
-        <div class="pillar-desc">Two pointers walk sorted halves. Always take the smaller front. Result is guaranteed sorted.</div>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">04 // O(n log n)</div>
-        <div class="pillar-desc">log n levels × O(n) merge work per level. Holds for ALL inputs — no bad cases exist.</div>
-      </div>
+      <div class="pillar"><div class="pillar-num">01 // DIVIDE</div><div class="pillar-desc">Split in half recursively until every piece has 1 element.</div></div>
+      <div class="pillar"><div class="pillar-num">02 // CONQUER</div><div class="pillar-desc">Base case reached. Single elements need no sorting.</div></div>
+      <div class="pillar"><div class="pillar-num">03 // MERGE</div><div class="pillar-desc">Two pointers walk sorted halves. Always take the smaller front.</div></div>
+      <div class="pillar"><div class="pillar-num">04 // O(n log n)</div><div class="pillar-desc">log n levels × O(n) merge work per level.</div></div>
     </div>
   </div>
 
   <div class="info-grid">
-    <div class="info-card">
-      <div class="ic-label">Time complexity</div>
-      <div class="ic-val white">O(n log n)</div>
-      <div class="ic-sub">Best · Average · Worst</div>
-    </div>
-    <div class="info-card">
-      <div class="ic-label">Space complexity</div>
-      <div class="ic-val red">O(n)</div>
-      <div class="ic-sub">Temporary merge arrays</div>
-    </div>
-    <div class="info-card">
-      <div class="ic-label">Stable?</div>
-      <div class="ic-val white">Yes</div>
-      <div class="ic-sub">Takes left on equal elements</div>
-    </div>
-    <div class="info-card">
-      <div class="ic-label">Comparisons</div>
-      <div class="ic-val red" id="cmp-count">0</div>
-      <div class="ic-sub">Made so far</div>
-    </div>
+    <div class="info-card"><div class="ic-label">Time complexity</div><div class="ic-val white">O(n log n)</div><div class="ic-sub">Best · Average · Worst</div></div>
+    <div class="info-card"><div class="ic-label">Space complexity</div><div class="ic-val red">O(n)</div><div class="ic-sub">Temporary merge arrays</div></div>
+    <div class="info-card"><div class="ic-label">Stable?</div><div class="ic-val white">Yes</div><div class="ic-sub">Takes left on equal elements</div></div>
+    <div class="info-card"><div class="ic-label">Comparisons</div><div class="ic-val red" id="cmp-count">0</div><div class="ic-sub">Made so far</div></div>
   </div>
 
   <div class="controls">
-    <div class="input-wrap">
-      <label>ARRAY</label>
-      <input type="text" id="arr-input" value="38, 27, 43, 3, 9, 82, 10">
-    </div>
+    <div class="input-wrap"><label>ARRAY</label><input type="text" id="arr-input" value="38, 27, 43, 3, 9, 82, 10"></div>
     <button class="btn" onclick="randomize()">RANDOM</button>
     <button class="btn primary" id="btn-start" onclick="startSort()">RUN ▶</button>
     <button class="btn" id="btn-step" onclick="stepForward()" disabled>STEP →</button>
     <button class="btn" onclick="reset()">RESET</button>
-    <div class="speed-wrap">
-      <label>SPEED</label>
-      <input type="range" id="speed" min="1" max="10" value="5">
-    </div>
+    <div class="speed-wrap"><label>SPEED</label><input type="range" id="speed" min="1" max="10" value="5"></div>
   </div>
 
   <div class="phase-bar">
@@ -237,27 +190,19 @@
   </div>
 
   <div class="array-section">
-    <div class="section-label">Array state</div>
+    <div class="section-label">Array state <span style="color:var(--cyan-dim);">(bars move during merge!)</span></div>
     <div class="bars-wrap" id="bars-wrap"></div>
   </div>
 
   <div class="two-col">
     <div class="code-panel">
-      <div class="panel-header">
-        <div class="panel-title">merge() — the code</div>
-        <div class="code-dots">
-          <div class="code-dot" id="dot1"></div>
-          <div class="code-dot" id="dot2"></div>
-          <div class="code-dot" id="dot3"></div>
-        </div>
-      </div>
+      <div class="panel-header"><div class="panel-title">merge() — the code</div><div class="code-dots"><div class="code-dot" id="dot1"></div><div class="code-dot" id="dot2"></div><div class="code-dot" id="dot3"></div></div></div>
 <pre><span class="code-line" id="cl-fn"><span class="kw">function</span> <span class="fn">merge</span>(arr, l, m, r) {</span>
 <span class="code-line" id="cl-left">  <span class="kw">let</span> left  = arr.<span class="fn">slice</span>(l, m+<span class="nm">1</span>);</span>
 <span class="code-line" id="cl-right">  <span class="kw">let</span> right = arr.<span class="fn">slice</span>(m+<span class="nm">1</span>, r+<span class="nm">1</span>);</span>
 <span class="code-line" id="cl-ptrs">  <span class="kw">let</span> i=<span class="nm">0</span>, j=<span class="nm">0</span>, k=l;</span>
 <span class="code-line"> </span>
-<span class="code-line" id="cl-while">  <span class="kw">while</span> (i &lt; left.length &amp;&amp;</span>
-<span class="code-line">         j &lt; right.length) {</span>
+<span class="code-line" id="cl-while">  <span class="kw">while</span> (i &lt; left.length &amp;&amp; j &lt; right.length) {</span>
 <span class="code-line" id="cl-if">    <span class="kw">if</span> (left[i] &lt;= right[j]) {</span>
 <span class="code-line" id="cl-takeleft">      arr[k++] = left[i++]; <span class="cm">// take left</span></span>
 <span class="code-line" id="cl-else">    } <span class="kw">else</span> {</span>
@@ -265,205 +210,199 @@
 <span class="code-line">    }</span>
 <span class="code-line">  }</span>
 <span class="code-line"> </span>
-<span class="code-line" id="cl-rem">  <span class="cm">// append remaining elements</span></span>
-<span class="code-line" id="cl-reml">  <span class="kw">while</span>(i &lt; left.length)  arr[k++]=left[i++];</span>
+<span class="code-line" id="cl-rem">  <span class="cm">// append remaining</span></span>
+<span class="code-line" id="cl-reml">  <span class="kw">while</span>(i &lt; left.length) arr[k++]=left[i++];</span>
 <span class="code-line" id="cl-remr">  <span class="kw">while</span>(j &lt; right.length) arr[k++]=right[j++];</span>
 <span class="code-line">}</span></pre>
     </div>
-
     <div class="merge-panel">
-      <div class="panel-header">
-        <div class="panel-title">current merge operation</div>
-      </div>
-      <div class="merge-panel-body" id="merge-body">
-        <p style="font-size:11px;color:var(--muted);font-family:var(--mono)">// run algorithm to see merge step live</p>
-      </div>
+      <div class="panel-header"><div class="panel-title">current merge operation</div></div>
+      <div class="merge-panel-body" id="merge-body"><p style="font-size:11px;color:var(--muted);font-family:var(--mono)">// click RUN to see live merge visualization</p></div>
     </div>
   </div>
 
   <div class="tree-section">
-    <div class="section-label">Recursion tree</div>
+    <div class="section-label">Recursion tree <span style="color:var(--cyan-dim);">(nodes highlight as we go)</span></div>
     <canvas id="tree-canvas"></canvas>
   </div>
 
-  <div class="log-section">
-    <div class="section-label">Step log</div>
-    <div class="log-box" id="log-box"></div>
-  </div>
-
-  <footer>MERGE SORT · BCS 309 ALGORITHMS I · SPRING 2026</footer>
+  <div class="log-section"><div class="section-label">Step log</div><div class="log-box" id="log-box"></div></div>
+  <footer>MERGE SORT · BCS 309 · NAVY & CYAN THEME · LIVE ANIMATION</footer>
 </div>
 
 <script>
-let arr=[],steps=[],stepIdx=0,animTimer=null,cmpCount=0,running=false;
-const arr_input=document.getElementById('arr-input');
+let arr = [], steps = [], stepIdx = 0, animTimer = null, cmpCount = 0, running = false;
+const arr_input = document.getElementById('arr-input');
 
-function parseArr(){return arr_input.value.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n));}
+function parseArr() { return arr_input.value.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n)); }
 
-function randomize(){
-  const n=7+Math.floor(Math.random()*5);
-  arr_input.value=Array.from({length:n},()=>1+Math.floor(Math.random()*99)).join(', ');
+function randomize() {
+  const n = 6 + Math.floor(Math.random() * 6);
+  arr_input.value = Array.from({ length: n }, () => 10 + Math.floor(Math.random() * 90)).join(', ');
   reset();
 }
 
-function reset(){
-  clearTimeout(animTimer);steps=[];stepIdx=0;cmpCount=0;running=false;
-  document.getElementById('cmp-count').textContent='0';
-  document.getElementById('btn-start').disabled=false;
-  document.getElementById('btn-step').disabled=true;
+function reset() {
+  clearTimeout(animTimer); steps = []; stepIdx = 0; cmpCount = 0; running = false;
+  document.getElementById('cmp-count').textContent = '0';
+  document.getElementById('btn-start').disabled = false;
+  document.getElementById('btn-step').disabled = true;
   setPhase('idle');
-  const a=parseArr();renderBars(a,a.map(()=>'default'));
-  clearLog();renderTree([]);clearMergeBody();hlCode(null);
+  const a = parseArr(); renderBars(a, a.map(() => 'default'));
+  clearLog(); renderTree([]); clearMergeBody(); hlCode(null);
 }
 
-function setPhase(p){
-  ['idle','split','merge','done'].forEach(x=>document.getElementById('ph-'+x).classList.remove('active','done'));
-  document.getElementById('ph-'+p).classList.add('active');
-  if(p==='done')['split','merge'].forEach(x=>document.getElementById('ph-'+x).classList.add('done'));
+function setPhase(p) {
+  ['idle', 'split', 'merge', 'done'].forEach(x => document.getElementById('ph-' + x).classList.remove('active', 'done'));
+  document.getElementById('ph-' + p).classList.add('active');
+  if (p === 'done') ['split', 'merge'].forEach(x => document.getElementById('ph-' + x).classList.add('done'));
 }
 
-function generateSteps(a){
-  const s=[];
-  function ms(arr,l,r){
-    if(l>=r)return;
-    const m=Math.floor((l+r)/2);
-    s.push({type:'split',l,m,r,arr:[...arr]});
-    ms(arr,l,m);ms(arr,m+1,r);
-    const left=arr.slice(l,m+1),right=arr.slice(m+1,r+1);
-    let i=0,j=0,k=l;const result=[];
-    s.push({type:'merge-start',l,m,r,left:[...left],right:[...right],arr:[...arr]});
-    while(i<left.length&&j<right.length){
-      s.push({type:'compare',l,m,r,left:[...left],right:[...right],li:i,ri:j,result:[...result],arr:[...arr]});
-      if(left[i]<=right[j]){arr[k++]=left[i];result.push(left[i]);i++;}
-      else{arr[k++]=right[j];result.push(right[j]);j++;}
+function generateSteps(a) {
+  const s = [];
+  function ms(arr, l, r) {
+    if (l >= r) return;
+    const m = Math.floor((l + r) / 2);
+    s.push({ type: 'split', l, m, r, arr: [...arr] });
+    ms(arr, l, m);
+    ms(arr, m + 1, r);
+    const left = arr.slice(l, m + 1);
+    const right = arr.slice(m + 1, r + 1);
+    let i = 0, j = 0, k = l;
+    const result = [];
+    s.push({ type: 'merge-start', l, m, r, left: [...left], right: [...right], arr: [...arr] });
+    while (i < left.length && j < right.length) {
+      s.push({ type: 'compare', l, m, r, left: [...left], right: [...right], li: i, ri: j, result: [...result], arr: [...arr] });
+      if (left[i] <= right[j]) { arr[k] = left[i]; result.push(left[i]); i++; k++; }
+      else { arr[k] = right[j]; result.push(right[j]); j++; k++; }
     }
-    while(i<left.length){arr[k++]=left[i];result.push(left[i]);i++;}
-    while(j<right.length){arr[k++]=right[j];result.push(right[j]);j++;}
-    s.push({type:'merged',l,m,r,left:[...left],right:[...right],result:[...result],arr:[...arr]});
+    while (i < left.length) { arr[k] = left[i]; result.push(left[i]); i++; k++; }
+    while (j < right.length) { arr[k] = right[j]; result.push(right[j]); j++; k++; }
+    s.push({ type: 'merged', l, m, r, left: [...left], right: [...right], result: [...result], arr: [...arr] });
   }
-  const work=[...a];ms(work,0,a.length-1);
-  s.push({type:'done',arr:[...work]});return s;
+  const work = [...a];
+  ms(work, 0, a.length - 1);
+  s.push({ type: 'done', arr: [...work] });
+  return s;
 }
 
-function startSort(){
-  const a=parseArr();if(!a.length)return;
-  arr=a;steps=generateSteps([...a]);stepIdx=0;cmpCount=0;
-  document.getElementById('cmp-count').textContent='0';
-  document.getElementById('btn-start').disabled=true;
-  document.getElementById('btn-step').disabled=false;
-  clearLog();renderTree([]);autoPlay();
+function startSort() {
+  const a = parseArr(); if (!a.length) return;
+  arr = a; steps = generateSteps([...a]); stepIdx = 0; cmpCount = 0;
+  document.getElementById('cmp-count').textContent = '0';
+  document.getElementById('btn-start').disabled = true;
+  document.getElementById('btn-step').disabled = false;
+  clearLog(); renderTree([]); autoPlay();
 }
 
-function autoPlay(){
-  running=true;
-  const delay=(11-parseInt(document.getElementById('speed').value))*80;
-  function next(){
-    if(stepIdx>=steps.length){running=false;return;}
-    applyStep(steps[stepIdx]);stepIdx++;
-    animTimer=setTimeout(next,delay);
+function autoPlay() {
+  running = true;
+  const delay = Math.max(30, (11 - parseInt(document.getElementById('speed').value)) * 70);
+  function next() {
+    if (stepIdx >= steps.length) { running = false; return; }
+    applyStep(steps[stepIdx]);
+    stepIdx++;
+    animTimer = setTimeout(next, delay);
   }
   next();
 }
 
-function stepForward(){
-  if(stepIdx>=steps.length)return;
-  clearTimeout(animTimer);running=false;
-  applyStep(steps[stepIdx]);stepIdx++;
+function stepForward() {
+  if (stepIdx >= steps.length) return;
+  clearTimeout(animTimer); running = false;
+  applyStep(steps[stepIdx]);
+  stepIdx++;
 }
 
-function hlCode(id){
-  document.querySelectorAll('.code-line').forEach(l=>l.classList.remove('lit'));
-  ['dot1','dot2','dot3'].forEach(d=>document.getElementById(d).classList.remove('lit'));
-  if(!id)return;
-  const el=document.getElementById(id);if(el)el.classList.add('lit');
-  if(id==='cl-left'||id==='cl-right')document.getElementById('dot1').classList.add('lit');
-  if(id==='cl-takeleft'||id==='cl-takeright'||id==='cl-if')document.getElementById('dot2').classList.add('lit');
-  if(id==='cl-reml'||id==='cl-remr'||id==='cl-rem')document.getElementById('dot3').classList.add('lit');
+function hlCode(id) {
+  document.querySelectorAll('.code-line').forEach(l => l.classList.remove('lit'));
+  ['dot1', 'dot2', 'dot3'].forEach(d => document.getElementById(d).classList.remove('lit'));
+  if (!id) return;
+  const el = document.getElementById(id); if (el) el.classList.add('lit');
+  if (id === 'cl-left' || id === 'cl-right') document.getElementById('dot1').classList.add('lit');
+  if (id === 'cl-takeleft' || id === 'cl-takeright' || id === 'cl-if') document.getElementById('dot2').classList.add('lit');
+  if (id === 'cl-reml' || id === 'cl-remr' || id === 'cl-rem') document.getElementById('dot3').classList.add('lit');
 }
 
-function applyStep(step){
-  const colors=arr.map(()=>'default');
-  if(step.type==='split'){
+function applyStep(step) {
+  const colors = new Array(step.arr.length).fill('default');
+  if (step.type === 'split') {
     setPhase('split');
-    for(let i=step.l;i<=step.r;i++)colors[i]='active';
-    renderBars(step.arr,colors);
-    addLog(`Split [${step.l}..${step.r}] → [${step.l}..${step.m}] and [${step.m+1}..${step.r}]`,'hl');
-    renderTree(steps.slice(0,stepIdx+1));clearMergeBody();hlCode(null);
-  } else if(step.type==='merge-start'){
+    for (let i = step.l; i <= step.r; i++) colors[i] = 'active';
+    renderBars(step.arr, colors);
+    addLog(`Split [${step.l}..${step.r}] → [${step.l}..${step.m}] and [${step.m+1}..${step.r}]`, 'hl');
+    renderFullTree(); clearMergeBody(); hlCode(null);
+  } 
+  else if (step.type === 'merge-start') {
     setPhase('merge');
-    for(let i=step.l;i<=step.r;i++)colors[i]='merging';
-    renderBars(step.arr,colors);
-    addLog(`Merge [${step.l}..${step.m}] + [${step.m+1}..${step.r}]`,'ml');
-    showMerge(step.left,step.right,[],0,0);hlCode('cl-left');
-  } else if(step.type==='compare'){
-    cmpCount++;document.getElementById('cmp-count').textContent=cmpCount;
-    for(let i=step.l;i<=step.r;i++)colors[i]='comparing';
-    renderBars(step.arr,colors);
-    const tl=step.left[step.li]<=step.right[step.ri];
-    addLog(`Compare ${step.left[step.li]} vs ${step.right[step.ri]} → take ${tl?step.left[step.li]:step.right[step.ri]}`,'');
-    showMerge(step.left,step.right,step.result,step.li,step.ri);
-    hlCode(tl?'cl-takeleft':'cl-takeright');
-  } else if(step.type==='merged'){
-    for(let i=step.l;i<=step.r;i++)colors[i]='merging';
-    renderBars(step.arr,colors);
-    addLog(`Merged → [${step.result.join(', ')}]`,'ml');
-    showMerge(step.left,step.right,step.result,-1,-1);hlCode('cl-rem');
-  } else if(step.type==='done'){
+    for (let i = step.l; i <= step.r; i++) colors[i] = 'merging';
+    renderBars(step.arr, colors);
+    addLog(`🔗 Merge [${step.l}..${step.m}] + [${step.m+1}..${step.r}]`, 'ml');
+    showMerge(step.left, step.right, [], 0, 0);
+    hlCode('cl-left');
+    renderFullTree();
+  } 
+  else if (step.type === 'compare') {
+    cmpCount++; document.getElementById('cmp-count').textContent = cmpCount;
+    for (let i = step.l; i <= step.r; i++) colors[i] = 'comparing';
+    renderBars(step.arr, colors);
+    const takeLeft = step.left[step.li] <= step.right[step.ri];
+    addLog(`⚖️ Compare ${step.left[step.li]} vs ${step.right[step.ri]} → take ${takeLeft ? step.left[step.li] : step.right[step.ri]}`, '');
+    showMerge(step.left, step.right, step.result, step.li, step.ri);
+    hlCode(takeLeft ? 'cl-takeleft' : 'cl-takeright');
+    renderFullTree();
+  } 
+  else if (step.type === 'merged') {
+    for (let i = step.l; i <= step.r; i++) colors[i] = 'sorted';
+    renderBars(step.arr, colors);
+    addLog(`✅ Merged → [${step.result.join(', ')}]`, 'ml');
+    showMerge(step.left, step.right, step.result, -1, -1);
+    hlCode('cl-rem');
+    renderFullTree();
+  } 
+  else if (step.type === 'done') {
     setPhase('done');
-    renderBars(step.arr,step.arr.map(()=>'sorted'));
-    addLog('// array fully sorted!','dl');
-    document.getElementById('btn-step').disabled=true;
-    clearMergeBody();renderTree(steps);hlCode(null);
+    renderBars(step.arr, step.arr.map(() => 'sorted'));
+    addLog('🎉 Array fully sorted! O(n log n) complete.', 'dl');
+    document.getElementById('btn-step').disabled = true;
+    clearMergeBody();
+    renderFullTree();
+    hlCode(null);
   }
 }
 
-function renderBars(a,colors){
-  const wrap=document.getElementById('bars-wrap');
-  const max=Math.max(...a,1);
-  wrap.innerHTML=a.map((v,i)=>`<div class="bar ${colors[i]}" style="height:${Math.max(10,Math.round(v/max*140))}px"><span class="bar-val">${v}</span></div>`).join('');
+function renderBars(a, colors) {
+  const wrap = document.getElementById('bars-wrap');
+  const max = Math.max(...a, 1);
+  wrap.innerHTML = a.map((v, i) => `<div class="bar ${colors[i]}" style="height:${Math.max(12, Math.round(v / max * 135))}px"><span class="bar-val">${v}</span></div>`).join('');
 }
 
-function showMerge(left,right,result,li,ri){
-  document.getElementById('merge-body').innerHTML=`
+function showMerge(left, right, result, li, ri) {
+  document.getElementById('merge-body').innerHTML = `
     <div class="merge-arrays">
       <div class="arr-group">
         <div class="arr-label">LEFT HALF</div>
-        <div class="arr-cells">${left.map((v,i)=>`<div class="arr-cell ${i===li?'ptr':i<li?'taken':''}">${v}</div>`).join('')}</div>
+        <div class="arr-cells">${left.map((v, i) => `<div class="arr-cell ${i === li ? 'ptr' : (i < li ? 'taken' : '')}">${v}</div>`).join('')}</div>
       </div>
       <div class="merge-op">+</div>
       <div class="arr-group">
         <div class="arr-label">RIGHT HALF</div>
-        <div class="arr-cells">${right.map((v,i)=>`<div class="arr-cell ${i===ri?'ptr':i<ri?'taken':''}">${v}</div>`).join('')}</div>
+        <div class="arr-cells">${right.map((v, i) => `<div class="arr-cell ${i === ri ? 'ptr' : (i < ri ? 'taken' : '')}">${v}</div>`).join('')}</div>
       </div>
       <div class="merge-op">→</div>
       <div class="arr-group">
         <div class="arr-label">RESULT</div>
-        <div class="arr-cells">${result.length?result.map(v=>`<div class="arr-cell result-cell">${v}</div>`).join(''):'<span style="font-size:10px;color:var(--muted);font-family:var(--mono)">building...</span>'}</div>
+        <div class="arr-cells">${result.length ? result.map(v => `<div class="arr-cell result-cell">${v}</div>`).join('') : '<span style="font-size:10px;color:var(--muted);font-family:var(--mono)">building...</span>'}</div>
       </div>
     </div>`;
 }
 
-function clearMergeBody(){
-  document.getElementById('merge-body').innerHTML=`<p style="font-size:11px;color:var(--muted);font-family:var(--mono)">// run algorithm to see merge step live</p>`;
+function clearMergeBody() {
+  document.getElementById('merge-body').innerHTML = `<p style="font-size:11px;color:var(--muted);font-family:var(--mono)">// run algorithm to see merge step live</p>`;
 }
 
-let logCount=0;
-function addLog(msg,cls){
+let logCount = 0;
+function addLog(msg, cls) {
   logCount++;
-  const box=document.getElementById('log-box');
-  const el=document.createElement('div');
-  el.className='log-entry '+cls;
-  el.innerHTML=`<span class="sn">${String(logCount).padStart(3,'0')}</span>${msg}`;
-  box.appendChild(el);box.scrollTop=box.scrollHeight;
-}
-function clearLog(){logCount=0;document.getElementById('log-box').innerHTML='';}
-
-function renderTree(allSteps){
-  const canvas=document.getElementById('tree-canvas');
-  const ctx=canvas.getContext('2d');
-  canvas.width=canvas.offsetWidth*devicePixelRatio;
-  canvas.height=canvas.offsetHeight*devicePixelRatio;
-  ctx.scale(devicePixelRatio,devicePixelRatio);
-  const cw=canvas.offsetWidth,ch=canvas.offsetHeight;
-  ctx.clearRect(0,0,cw,ch);
-  const a=parseArr();if(!a.length)return
+  const box = document.getElementById('log-box');
+  const el = document
