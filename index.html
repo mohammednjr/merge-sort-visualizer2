@@ -7,181 +7,210 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0f;
-    --surface: #12121a;
-    --surface2: #1a1a26;
-    --border: #2a2a3a;
-    --accent: #7c6fff;
-    --accent2: #ff6b9d;
-    --green: #3fffa2;
-    --amber: #ffcc5c;
-    --text: #e8e8f0;
-    --muted: #7878a0;
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #2a2a2a;
+    --red: #ff2020;
+    --red-dim: #cc1a1a;
+    --red-glow: rgba(255,32,32,0.12);
+    --red2: #ff6666;
+    --white: #ffffff;
+    --off-white: #e8e8e8;
+    --muted: #555555;
+    --muted2: #333333;
     --mono: 'Space Mono', monospace;
     --sans: 'DM Sans', sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; overflow-x: hidden; }
+  body { background: var(--bg); color: var(--off-white); font-family: var(--sans); min-height: 100vh; overflow-x: hidden; }
 
-  /* grid background */
   body::before {
     content: '';
     position: fixed; inset: 0;
-    background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.3;
-    pointer-events: none;
-    z-index: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 36px 36px;
+    pointer-events: none; z-index: 0;
   }
 
-  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; }
+  .container { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; }
 
-  /* header */
-  header { margin-bottom: 2.5rem; }
-  .tag { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; }
-  h1 { font-family: var(--mono); font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 700; letter-spacing: -1px; line-height: 1.1; }
-  h1 span { color: var(--accent); }
-  .subtitle { font-size: 15px; color: var(--muted); margin-top: 0.75rem; max-width: 520px; line-height: 1.6; }
+  header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .header-left {}
+  .tag { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 0.4rem; }
+  h1 { font-family: var(--mono); font-size: clamp(2.2rem, 6vw, 3.8rem); font-weight: 700; letter-spacing: -2px; line-height: 1; color: var(--white); }
+  h1 span { color: var(--red); }
+  .subtitle { font-size: 12px; color: var(--muted); margin-top: 0.5rem; font-family: var(--mono); }
+  .header-badge { font-family: var(--mono); font-size: 10px; border: 1px solid var(--red); color: var(--red); padding: 6px 14px; border-radius: 2px; letter-spacing: 2px; white-space: nowrap; }
 
-  /* controls */
-  .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2rem; align-items: center; }
-  .btn {
-    font-family: var(--mono); font-size: 12px; padding: 8px 18px;
-    border: 1px solid var(--border); border-radius: 4px;
-    cursor: pointer; transition: all 0.15s; letter-spacing: 1px;
-    background: transparent; color: var(--text);
-  }
-  .btn:hover { border-color: var(--accent); color: var(--accent); }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: #0a0a0f; font-weight: 700; }
-  .btn.primary:hover { background: #9a88ff; border-color: #9a88ff; }
-  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  /* CORE IDEA */
+  .core-idea { background: var(--surface); border-left: 3px solid var(--red); padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+  .core-idea-label { font-family: var(--mono); font-size: 9px; color: var(--red); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 0.75rem; }
+  .core-idea-text { font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.9; margin-bottom: 1rem; }
+  .core-idea-text .hl { color: var(--white); }
+  .core-idea-text .hl-red { color: var(--red); font-weight: 700; }
+  .core-pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .pillar { background: var(--surface2); padding: 0.85rem 1rem; }
+  .pillar-num { font-family: var(--mono); font-size: 9px; color: var(--red); margin-bottom: 4px; letter-spacing: 1px; }
+  .pillar-title { font-family: var(--mono); font-size: 11px; color: var(--white); font-weight: 700; margin-bottom: 4px; }
+  .pillar-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* STATS */
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 1.5rem; }
+  .info-card { background: var(--surface); padding: 0.9rem 1rem; }
+  .ic-label { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+  .ic-val { font-family: var(--mono); font-size: 1.2rem; font-weight: 700; }
+  .ic-val.white { color: var(--white); }
+  .ic-val.red { color: var(--red); }
+  .ic-sub { font-size: 10px; color: var(--muted2); margin-top: 3px; font-family: var(--mono); }
+
+  /* CONTROLS */
+  .controls { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center; }
+  .btn { font-family: var(--mono); font-size: 11px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 2px; cursor: pointer; transition: all 0.1s; letter-spacing: 1px; background: transparent; color: var(--muted); }
+  .btn:hover { border-color: var(--white); color: var(--white); }
+  .btn.primary { background: var(--red); border-color: var(--red); color: var(--white); font-weight: 700; }
+  .btn.primary:hover { background: var(--red2); border-color: var(--red2); }
+  .btn:disabled { opacity: 0.2; cursor: not-allowed; }
   .speed-wrap { display: flex; align-items: center; gap: 8px; margin-left: auto; }
-  .speed-wrap label { font-size: 12px; color: var(--muted); font-family: var(--mono); }
-  input[type=range] { accent-color: var(--accent); width: 80px; }
+  .speed-wrap label { font-size: 10px; color: var(--muted); font-family: var(--mono); letter-spacing: 1px; }
+  input[type=range] { accent-color: var(--red); width: 80px; }
   .input-wrap { display: flex; align-items: center; gap: 8px; }
-  .input-wrap label { font-size: 12px; color: var(--muted); font-family: var(--mono); }
-  input[type=text] {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
-    color: var(--text); font-family: var(--mono); font-size: 12px;
-    padding: 7px 12px; width: 200px;
-  }
-  input[type=text]:focus { outline: none; border-color: var(--accent); }
+  .input-wrap label { font-size: 10px; color: var(--muted); font-family: var(--mono); letter-spacing: 1px; }
+  input[type=text] { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; color: var(--white); font-family: var(--mono); font-size: 12px; padding: 7px 12px; width: 210px; }
+  input[type=text]:focus { outline: none; border-color: var(--red); }
 
-  /* array display */
-  .array-section { margin-bottom: 2rem; }
-  .section-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.75rem; }
-  .bars-wrap { display: flex; align-items: flex-end; gap: 6px; height: 160px; padding: 0 4px; }
-  .bar {
-    flex: 1; border-radius: 3px 3px 0 0;
-    transition: height 0.3s ease, background 0.3s ease;
-    position: relative; min-width: 20px; max-width: 60px;
-    display: flex; align-items: flex-start; justify-content: center;
-  }
-  .bar .bar-val {
-    font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.6);
-    padding-top: 4px; user-select: none;
-  }
-  .bar.default { background: var(--surface2); border: 1px solid var(--border); }
-  .bar.active { background: var(--accent); border-color: var(--accent); }
-  .bar.comparing { background: var(--amber); border-color: var(--amber); }
-  .bar.merging { background: var(--accent2); border-color: var(--accent2); }
-  .bar.sorted { background: var(--green); border-color: var(--green); }
+  /* PHASE */
+  .phase-bar { display: flex; gap: 0; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .phase-pill { font-family: var(--mono); font-size: 10px; padding: 5px 14px; border: 1px solid var(--border); color: var(--muted2); letter-spacing: 2px; transition: all 0.2s; margin-right: -1px; }
+  .phase-pill.active { border-color: var(--red); color: var(--red); background: var(--red-glow); z-index: 1; position: relative; }
+  .phase-pill.done { border-color: var(--muted); color: var(--muted); }
 
-  /* recursion tree */
-  .tree-section { margin-bottom: 2rem; }
-  #tree-canvas { width: 100%; height: 280px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; display: block; }
+  /* BARS */
+  .section-label { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .array-section { margin-bottom: 1.5rem; }
+  .bars-wrap { display: flex; align-items: flex-end; gap: 4px; height: 150px; padding: 0 2px; }
+  .bar { flex: 1; border-radius: 1px 1px 0 0; transition: height 0.25s, background 0.25s; position: relative; min-width: 18px; max-width: 55px; display: flex; align-items: flex-start; justify-content: center; }
+  .bar .bar-val { font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.3); padding-top: 3px; user-select: none; }
+  .bar.default { background: #1e1e1e; border: 1px solid var(--border); }
+  .bar.active { background: rgba(255,255,255,0.12); border: 1px solid var(--white); }
+  .bar.comparing { background: var(--red-glow); border: 1px solid var(--red); }
+  .bar.merging { background: rgba(255,100,100,0.1); border: 1px solid var(--red-dim); }
+  .bar.sorted { background: rgba(255,255,255,0.15); border: 1px solid var(--white); }
 
-  /* step log */
-  .log-section { margin-bottom: 2rem; }
-  .log-box {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
-    padding: 1rem; height: 140px; overflow-y: auto; font-family: var(--mono); font-size: 12px;
-  }
-  .log-entry { padding: 3px 0; border-bottom: 1px solid var(--border); line-height: 1.6; }
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 1.5rem; }
+  @media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* CODE */
+  .code-panel { background: var(--surface); overflow: hidden; }
+  .panel-header { padding: 8px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; background: var(--surface2); }
+  .panel-title { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+  .code-dots { display: flex; gap: 5px; margin-left: auto; }
+  .code-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); transition: all 0.2s; }
+  .code-dot.lit { background: var(--red); box-shadow: 0 0 6px var(--red); }
+  pre { font-family: var(--mono); font-size: 11px; line-height: 1.85; padding: 1rem; overflow-x: auto; color: var(--muted); margin: 0; }
+  .kw { color: var(--white); }
+  .fn { color: var(--off-white); }
+  .cm { color: var(--muted2); }
+  .nm { color: var(--red2); }
+  .code-line { display: block; padding: 0 4px; border-radius: 1px; transition: background 0.15s, color 0.15s; }
+  .code-line.lit { background: var(--red-glow); border-left: 2px solid var(--red); padding-left: 6px; }
+  .code-line.lit .kw, .code-line.lit .fn, .code-line.lit .nm { color: var(--red) !important; }
+  .code-line.lit .cm { color: var(--red-dim) !important; }
+
+  /* MERGE VISUAL */
+  .merge-panel { background: var(--surface); overflow: hidden; }
+  .merge-panel-body { padding: 1rem; min-height: 190px; }
+  .merge-arrays { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start; }
+  .arr-group { }
+  .arr-label { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 2px; margin-bottom: 5px; }
+  .arr-cells { display: flex; gap: 3px; flex-wrap: wrap; }
+  .arr-cell { width: 30px; height: 30px; border-radius: 2px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 700; background: var(--surface2); color: var(--muted); transition: all 0.15s; }
+  .arr-cell.ptr { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+  .arr-cell.taken { opacity: 0.15; }
+  .arr-cell.result-cell { background: rgba(255,255,255,0.05); border-color: var(--white); color: var(--white); }
+  .merge-op { font-family: var(--mono); font-size: 16px; color: var(--border); align-self: center; margin-top: 18px; }
+
+  /* TREE */
+  .tree-section { margin-bottom: 1.5rem; }
+  #tree-canvas { width: 100%; height: 260px; background: var(--surface); border: 1px solid var(--border); display: block; }
+
+  /* LOG */
+  .log-section { margin-bottom: 1.5rem; }
+  .log-box { background: var(--surface); border: 1px solid var(--border); padding: 0.75rem 1rem; height: 130px; overflow-y: auto; font-family: var(--mono); font-size: 11px; }
+  .log-entry { padding: 2px 0; border-bottom: 1px solid #1a1a1a; line-height: 1.6; color: var(--muted); }
   .log-entry:last-child { border-bottom: none; }
-  .log-entry .step-num { color: var(--muted); margin-right: 8px; }
-  .log-entry.highlight { color: var(--accent); }
-  .log-entry.merge-log { color: var(--accent2); }
-  .log-entry.done-log { color: var(--green); }
+  .log-entry .sn { color: var(--muted2); margin-right: 8px; }
+  .log-entry.hl { color: var(--white); }
+  .log-entry.ml { color: var(--red2); }
+  .log-entry.dl { color: var(--white); }
 
-  /* info cards */
-  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 2rem; }
-  .info-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
-    padding: 1rem 1.25rem;
-  }
-  .info-card .ic-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
-  .info-card .ic-val { font-family: var(--mono); font-size: 1.4rem; font-weight: 700; }
-  .info-card .ic-val.accent { color: var(--accent); }
-  .info-card .ic-val.green { color: var(--green); }
-  .info-card .ic-val.amber { color: var(--amber); }
-  .info-card .ic-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-  /* explainer */
-  .explainer { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; margin-bottom: 2rem; }
-  .explainer h3 { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-bottom: 0.75rem; }
-  .explainer p { font-size: 14px; color: var(--muted); line-height: 1.7; }
-  .explainer strong { color: var(--text); }
-
-  /* phase indicator */
-  .phase-bar { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-  .phase-pill {
-    font-family: var(--mono); font-size: 11px; padding: 5px 12px;
-    border-radius: 20px; border: 1px solid var(--border);
-    color: var(--muted); letter-spacing: 1px;
-    transition: all 0.2s;
-  }
-  .phase-pill.active { border-color: var(--accent); color: var(--accent); background: rgba(124,111,255,0.1); }
-  .phase-pill.done { border-color: var(--green); color: var(--green); background: rgba(63,255,162,0.07); }
-
-  /* merge step visual */
-  .merge-visual { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; margin-bottom: 2rem; min-height: 80px; }
-  .merge-visual h3 { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.75rem; }
-  .merge-arrays { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-start; }
-  .arr-label { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-  .arr-cells { display: flex; gap: 4px; }
-  .arr-cell {
-    width: 32px; height: 32px; border-radius: 4px; border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: 13px; font-weight: 700;
-    background: var(--surface2); color: var(--text);
-    transition: all 0.2s;
-  }
-  .arr-cell.ptr { border-color: var(--accent); color: var(--accent); background: rgba(124,111,255,0.15); }
-  .arr-cell.taken { opacity: 0.3; }
-  .arr-cell.result-cell { background: rgba(63,255,162,0.1); border-color: var(--green); color: var(--green); }
-  .merge-arrow { font-size: 20px; color: var(--muted); align-self: center; margin-top: 20px; }
-
-  footer { border-top: 1px solid var(--border); padding-top: 1rem; font-family: var(--mono); font-size: 11px; color: var(--muted); text-align: center; letter-spacing: 1px; }
+  footer { border-top: 1px solid var(--border); padding-top: 1rem; font-family: var(--mono); font-size: 10px; color: var(--muted2); text-align: center; letter-spacing: 2px; }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
 </style>
 </head>
 <body>
 <div class="container">
+
   <header>
-    <div class="tag">BCS 309 · Algorithms I · Spring 2026</div>
-    <h1>Merge<span>Sort</span></h1>
-    <p class="subtitle">An interactive tool for learning divide-and-conquer sorting. Watch the algorithm split, recurse, and merge — step by step.</p>
+    <div class="header-left">
+      <div class="tag">BCS 309 · Algorithms I · Spring 2026</div>
+      <h1>MERGE<span>SORT</span></h1>
+      <p class="subtitle">// divide. conquer. merge.</p>
+    </div>
+    <div class="header-badge">INTERACTIVE TOOL</div>
   </header>
+
+  <div class="core-idea">
+    <div class="core-idea-label">// core idea</div>
+    <div class="core-idea-text">
+      <span class="hl-red">Key insight:</span> <span class="hl">It's easier to merge two already-sorted lists than to sort one big unsorted one.</span><br>
+      So we <span class="hl-red">split</span> down to single elements (trivially sorted), then <span class="hl-red">merge</span> back up using two pointers.<br>
+      At every merge, always pick the <span class="hl">smaller front element</span> — this guarantees a sorted result every time.
+    </div>
+    <div class="core-pillars">
+      <div class="pillar">
+        <div class="pillar-num">01 // DIVIDE</div>
+        <div class="pillar-desc">Split in half recursively until every piece has 1 element. A single element is trivially sorted.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02 // CONQUER</div>
+        <div class="pillar-desc">Base case reached. Single elements need no sorting — recursion bottoms out and returns.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03 // MERGE</div>
+        <div class="pillar-desc">Two pointers walk sorted halves. Always take the smaller front. Result is guaranteed sorted.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04 // O(n log n)</div>
+        <div class="pillar-desc">log n levels × O(n) merge work per level. Holds for ALL inputs — no bad cases exist.</div>
+      </div>
+    </div>
+  </div>
 
   <div class="info-grid">
     <div class="info-card">
       <div class="ic-label">Time complexity</div>
-      <div class="ic-val accent">O(n log n)</div>
+      <div class="ic-val white">O(n log n)</div>
       <div class="ic-sub">Best · Average · Worst</div>
     </div>
     <div class="info-card">
       <div class="ic-label">Space complexity</div>
-      <div class="ic-val amber">O(n)</div>
+      <div class="ic-val red">O(n)</div>
       <div class="ic-sub">Temporary merge arrays</div>
     </div>
     <div class="info-card">
       <div class="ic-label">Stable?</div>
-      <div class="ic-val green">Yes</div>
-      <div class="ic-sub">Preserves equal-element order</div>
+      <div class="ic-val white">Yes</div>
+      <div class="ic-sub">Takes left on equal elements</div>
     </div>
     <div class="info-card">
       <div class="ic-label">Comparisons</div>
-      <div class="ic-val accent" id="cmp-count">0</div>
+      <div class="ic-val red" id="cmp-count">0</div>
       <div class="ic-sub">Made so far</div>
     </div>
   </div>
@@ -189,19 +218,19 @@
   <div class="controls">
     <div class="input-wrap">
       <label>ARRAY</label>
-      <input type="text" id="arr-input" value="38, 27, 43, 3, 9, 82, 10" placeholder="e.g. 5, 2, 8, 1, 9">
+      <input type="text" id="arr-input" value="38, 27, 43, 3, 9, 82, 10">
     </div>
     <button class="btn" onclick="randomize()">RANDOM</button>
     <button class="btn primary" id="btn-start" onclick="startSort()">RUN ▶</button>
     <button class="btn" id="btn-step" onclick="stepForward()" disabled>STEP →</button>
-    <button class="btn" id="btn-reset" onclick="reset()">RESET</button>
+    <button class="btn" onclick="reset()">RESET</button>
     <div class="speed-wrap">
       <label>SPEED</label>
       <input type="range" id="speed" min="1" max="10" value="5">
     </div>
   </div>
 
-  <div class="phase-bar" id="phase-bar">
+  <div class="phase-bar">
     <div class="phase-pill active" id="ph-idle">IDLE</div>
     <div class="phase-pill" id="ph-split">SPLITTING</div>
     <div class="phase-pill" id="ph-merge">MERGING</div>
@@ -213,9 +242,44 @@
     <div class="bars-wrap" id="bars-wrap"></div>
   </div>
 
-  <div class="merge-visual" id="merge-visual">
-    <h3>Current merge operation</h3>
-    <p style="font-size:13px; color: var(--muted);">Run the algorithm to see the merge step visualized here.</p>
+  <div class="two-col">
+    <div class="code-panel">
+      <div class="panel-header">
+        <div class="panel-title">merge() — the code</div>
+        <div class="code-dots">
+          <div class="code-dot" id="dot1"></div>
+          <div class="code-dot" id="dot2"></div>
+          <div class="code-dot" id="dot3"></div>
+        </div>
+      </div>
+<pre><span class="code-line" id="cl-fn"><span class="kw">function</span> <span class="fn">merge</span>(arr, l, m, r) {</span>
+<span class="code-line" id="cl-left">  <span class="kw">let</span> left  = arr.<span class="fn">slice</span>(l, m+<span class="nm">1</span>);</span>
+<span class="code-line" id="cl-right">  <span class="kw">let</span> right = arr.<span class="fn">slice</span>(m+<span class="nm">1</span>, r+<span class="nm">1</span>);</span>
+<span class="code-line" id="cl-ptrs">  <span class="kw">let</span> i=<span class="nm">0</span>, j=<span class="nm">0</span>, k=l;</span>
+<span class="code-line"> </span>
+<span class="code-line" id="cl-while">  <span class="kw">while</span> (i &lt; left.length &amp;&amp;</span>
+<span class="code-line">         j &lt; right.length) {</span>
+<span class="code-line" id="cl-if">    <span class="kw">if</span> (left[i] &lt;= right[j]) {</span>
+<span class="code-line" id="cl-takeleft">      arr[k++] = left[i++]; <span class="cm">// take left</span></span>
+<span class="code-line" id="cl-else">    } <span class="kw">else</span> {</span>
+<span class="code-line" id="cl-takeright">      arr[k++] = right[j++]; <span class="cm">// take right</span></span>
+<span class="code-line">    }</span>
+<span class="code-line">  }</span>
+<span class="code-line"> </span>
+<span class="code-line" id="cl-rem">  <span class="cm">// append remaining elements</span></span>
+<span class="code-line" id="cl-reml">  <span class="kw">while</span>(i &lt; left.length)  arr[k++]=left[i++];</span>
+<span class="code-line" id="cl-remr">  <span class="kw">while</span>(j &lt; right.length) arr[k++]=right[j++];</span>
+<span class="code-line">}</span></pre>
+    </div>
+
+    <div class="merge-panel">
+      <div class="panel-header">
+        <div class="panel-title">current merge operation</div>
+      </div>
+      <div class="merge-panel-body" id="merge-body">
+        <p style="font-size:11px;color:var(--muted);font-family:var(--mono)">// run algorithm to see merge step live</p>
+      </div>
+    </div>
   </div>
 
   <div class="tree-section">
@@ -228,299 +292,220 @@
     <div class="log-box" id="log-box"></div>
   </div>
 
-  <div class="explainer">
-    <h3>// HOW IT WORKS</h3>
-    <p>
-      <strong>Divide:</strong> Split the array in half recursively until each subarray has 1 element (trivially sorted).<br><br>
-      <strong>Conquer:</strong> Merge pairs of sorted subarrays. Use two pointers — one per half. Always pick the smaller front element. When one half is exhausted, append the rest of the other.<br><br>
-      <strong>Why O(n log n)?</strong> There are <strong>log n levels</strong> of recursion (we halve each time). At each level, we do <strong>O(n) work</strong> in the merge step (every element is touched once). Total: n × log n.
-    </p>
-  </div>
-
-  <footer>MERGE SORT VISUALIZER · BCS 309 ALGORITHMS I</footer>
+  <footer>MERGE SORT · BCS 309 ALGORITHMS I · SPRING 2026</footer>
 </div>
 
 <script>
-let arr = [], steps = [], stepIdx = 0, animTimer = null, cmpCount = 0, running = false;
+let arr=[],steps=[],stepIdx=0,animTimer=null,cmpCount=0,running=false;
+const arr_input=document.getElementById('arr-input');
 
-function parseArr() {
-  return arr_input.value.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
-}
+function parseArr(){return arr_input.value.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n));}
 
-function randomize() {
-  const n = 7 + Math.floor(Math.random() * 5);
-  arr_input.value = Array.from({length: n}, () => 1 + Math.floor(Math.random() * 99)).join(', ');
+function randomize(){
+  const n=7+Math.floor(Math.random()*5);
+  arr_input.value=Array.from({length:n},()=>1+Math.floor(Math.random()*99)).join(', ');
   reset();
 }
 
-function reset() {
-  clearTimeout(animTimer);
-  steps = []; stepIdx = 0; cmpCount = 0; running = false;
-  document.getElementById('cmp-count').textContent = '0';
-  document.getElementById('btn-start').disabled = false;
-  document.getElementById('btn-step').disabled = true;
-  document.getElementById('btn-start').textContent = 'RUN ▶';
+function reset(){
+  clearTimeout(animTimer);steps=[];stepIdx=0;cmpCount=0;running=false;
+  document.getElementById('cmp-count').textContent='0';
+  document.getElementById('btn-start').disabled=false;
+  document.getElementById('btn-step').disabled=true;
   setPhase('idle');
-  const a = parseArr();
-  renderBars(a, a.map(() => 'default'));
-  clearLog();
-  renderTree([]);
-  clearMergeVisual();
+  const a=parseArr();renderBars(a,a.map(()=>'default'));
+  clearLog();renderTree([]);clearMergeBody();hlCode(null);
 }
 
-function setPhase(p) {
-  ['idle','split','merge','done'].forEach(x => {
-    document.getElementById('ph-' + x).classList.remove('active', 'done');
-  });
-  document.getElementById('ph-' + p).classList.add('active');
-  if (p === 'done') {
-    ['split','merge'].forEach(x => document.getElementById('ph-' + x).classList.add('done'));
-  }
+function setPhase(p){
+  ['idle','split','merge','done'].forEach(x=>document.getElementById('ph-'+x).classList.remove('active','done'));
+  document.getElementById('ph-'+p).classList.add('active');
+  if(p==='done')['split','merge'].forEach(x=>document.getElementById('ph-'+x).classList.add('done'));
 }
 
-// Generate all steps
-function generateSteps(a) {
-  const s = [];
-  const orig = [...a];
-  function ms(arr, l, r) {
-    if (l >= r) return;
-    const m = Math.floor((l + r) / 2);
-    s.push({type:'split', l, m, r, arr:[...arr]});
-    ms(arr, l, m);
-    ms(arr, m+1, r);
-    // merge
-    const left = arr.slice(l, m+1);
-    const right = arr.slice(m+1, r+1);
-    let i=0, j=0, k=l;
-    const result = [];
-    s.push({type:'merge-start', l, m, r, left:[...left], right:[...right], arr:[...arr]});
-    while (i < left.length && j < right.length) {
-      s.push({type:'compare', l, m, r, left:[...left], right:[...right], li:i, ri:j, result:[...result], arr:[...arr]});
-      if (left[i] <= right[j]) {
-        arr[k++] = left[i];
-        result.push(left[i]);
-        i++;
-      } else {
-        arr[k++] = right[j];
-        result.push(right[j]);
-        j++;
-      }
+function generateSteps(a){
+  const s=[];
+  function ms(arr,l,r){
+    if(l>=r)return;
+    const m=Math.floor((l+r)/2);
+    s.push({type:'split',l,m,r,arr:[...arr]});
+    ms(arr,l,m);ms(arr,m+1,r);
+    const left=arr.slice(l,m+1),right=arr.slice(m+1,r+1);
+    let i=0,j=0,k=l;const result=[];
+    s.push({type:'merge-start',l,m,r,left:[...left],right:[...right],arr:[...arr]});
+    while(i<left.length&&j<right.length){
+      s.push({type:'compare',l,m,r,left:[...left],right:[...right],li:i,ri:j,result:[...result],arr:[...arr]});
+      if(left[i]<=right[j]){arr[k++]=left[i];result.push(left[i]);i++;}
+      else{arr[k++]=right[j];result.push(right[j]);j++;}
     }
-    while (i < left.length) { arr[k++] = left[i]; result.push(left[i]); i++; }
-    while (j < right.length) { arr[k++] = right[j]; result.push(right[j]); j++; }
-    s.push({type:'merged', l, m, r, left:[...left], right:[...right], result:[...result], arr:[...arr]});
+    while(i<left.length){arr[k++]=left[i];result.push(left[i]);i++;}
+    while(j<right.length){arr[k++]=right[j];result.push(right[j]);j++;}
+    s.push({type:'merged',l,m,r,left:[...left],right:[...right],result:[...result],arr:[...arr]});
   }
-  const work = [...a];
-  ms(work, 0, a.length-1);
-  s.push({type:'done', arr:[...work]});
-  return s;
+  const work=[...a];ms(work,0,a.length-1);
+  s.push({type:'done',arr:[...work]});return s;
 }
 
-function startSort() {
-  const a = parseArr();
-  if (!a.length) return;
-  arr = a;
-  steps = generateSteps([...a]);
-  stepIdx = 0; cmpCount = 0;
-  document.getElementById('cmp-count').textContent = '0';
-  document.getElementById('btn-start').disabled = true;
-  document.getElementById('btn-step').disabled = false;
-  clearLog();
-  renderTree([]);
-  autoPlay();
+function startSort(){
+  const a=parseArr();if(!a.length)return;
+  arr=a;steps=generateSteps([...a]);stepIdx=0;cmpCount=0;
+  document.getElementById('cmp-count').textContent='0';
+  document.getElementById('btn-start').disabled=true;
+  document.getElementById('btn-step').disabled=false;
+  clearLog();renderTree([]);autoPlay();
 }
 
-function autoPlay() {
-  running = true;
-  const speed = 11 - parseInt(document.getElementById('speed').value);
-  const delay = speed * 80;
-  function next() {
-    if (stepIdx >= steps.length) { running = false; return; }
-    applyStep(steps[stepIdx]);
-    stepIdx++;
-    animTimer = setTimeout(next, delay);
+function autoPlay(){
+  running=true;
+  const delay=(11-parseInt(document.getElementById('speed').value))*80;
+  function next(){
+    if(stepIdx>=steps.length){running=false;return;}
+    applyStep(steps[stepIdx]);stepIdx++;
+    animTimer=setTimeout(next,delay);
   }
   next();
 }
 
-function stepForward() {
-  if (stepIdx >= steps.length) return;
-  clearTimeout(animTimer);
-  running = false;
-  applyStep(steps[stepIdx]);
-  stepIdx++;
+function stepForward(){
+  if(stepIdx>=steps.length)return;
+  clearTimeout(animTimer);running=false;
+  applyStep(steps[stepIdx]);stepIdx++;
 }
 
-function applyStep(step) {
-  const n = arr.length;
-  const colors = arr.map(() => 'default');
+function hlCode(id){
+  document.querySelectorAll('.code-line').forEach(l=>l.classList.remove('lit'));
+  ['dot1','dot2','dot3'].forEach(d=>document.getElementById(d).classList.remove('lit'));
+  if(!id)return;
+  const el=document.getElementById(id);if(el)el.classList.add('lit');
+  if(id==='cl-left'||id==='cl-right')document.getElementById('dot1').classList.add('lit');
+  if(id==='cl-takeleft'||id==='cl-takeright'||id==='cl-if')document.getElementById('dot2').classList.add('lit');
+  if(id==='cl-reml'||id==='cl-remr'||id==='cl-rem')document.getElementById('dot3').classList.add('lit');
+}
 
-  if (step.type === 'split') {
+function applyStep(step){
+  const colors=arr.map(()=>'default');
+  if(step.type==='split'){
     setPhase('split');
-    for (let i = step.l; i <= step.r; i++) colors[i] = 'active';
-    renderBars(step.arr, colors);
-    addLog(`Split [${step.l}..${step.r}] → [${step.l}..${step.m}] and [${step.m+1}..${step.r}]`, 'highlight');
-    renderTree(steps.slice(0, stepIdx+1));
-    clearMergeVisual();
-  } else if (step.type === 'merge-start') {
+    for(let i=step.l;i<=step.r;i++)colors[i]='active';
+    renderBars(step.arr,colors);
+    addLog(`Split [${step.l}..${step.r}] → [${step.l}..${step.m}] and [${step.m+1}..${step.r}]`,'hl');
+    renderTree(steps.slice(0,stepIdx+1));clearMergeBody();hlCode(null);
+  } else if(step.type==='merge-start'){
     setPhase('merge');
-    for (let i = step.l; i <= step.r; i++) colors[i] = 'merging';
-    renderBars(step.arr, colors);
-    addLog(`Merge [${step.l}..${step.m}] + [${step.m+1}..${step.r}]`, 'merge-log');
-    showMergeVisual(step.left, step.right, [], 0, 0);
-  } else if (step.type === 'compare') {
-    cmpCount++;
-    document.getElementById('cmp-count').textContent = cmpCount;
-    for (let i = step.l; i <= step.r; i++) colors[i] = 'comparing';
-    renderBars(step.arr, colors);
-    addLog(`Compare ${step.left[step.li]} vs ${step.right[step.ri]} → take ${step.left[step.li] <= step.right[step.ri] ? step.left[step.li] : step.right[step.ri]}`, '');
-    showMergeVisual(step.left, step.right, step.result, step.li, step.ri);
-  } else if (step.type === 'merged') {
-    for (let i = step.l; i <= step.r; i++) colors[i] = 'merging';
-    renderBars(step.arr, colors);
-    addLog(`Merged → [${step.result.join(', ')}]`, 'merge-log');
-    showMergeVisual(step.left, step.right, step.result, -1, -1);
-  } else if (step.type === 'done') {
+    for(let i=step.l;i<=step.r;i++)colors[i]='merging';
+    renderBars(step.arr,colors);
+    addLog(`Merge [${step.l}..${step.m}] + [${step.m+1}..${step.r}]`,'ml');
+    showMerge(step.left,step.right,[],0,0);hlCode('cl-left');
+  } else if(step.type==='compare'){
+    cmpCount++;document.getElementById('cmp-count').textContent=cmpCount;
+    for(let i=step.l;i<=step.r;i++)colors[i]='comparing';
+    renderBars(step.arr,colors);
+    const tl=step.left[step.li]<=step.right[step.ri];
+    addLog(`Compare ${step.left[step.li]} vs ${step.right[step.ri]} → take ${tl?step.left[step.li]:step.right[step.ri]}`,'');
+    showMerge(step.left,step.right,step.result,step.li,step.ri);
+    hlCode(tl?'cl-takeleft':'cl-takeright');
+  } else if(step.type==='merged'){
+    for(let i=step.l;i<=step.r;i++)colors[i]='merging';
+    renderBars(step.arr,colors);
+    addLog(`Merged → [${step.result.join(', ')}]`,'ml');
+    showMerge(step.left,step.right,step.result,-1,-1);hlCode('cl-rem');
+  } else if(step.type==='done'){
     setPhase('done');
-    renderBars(step.arr, step.arr.map(() => 'sorted'));
-    addLog('Array fully sorted!', 'done-log');
-    document.getElementById('btn-step').disabled = true;
-    clearMergeVisual();
-    renderTree(steps);
+    renderBars(step.arr,step.arr.map(()=>'sorted'));
+    addLog('// array fully sorted!','dl');
+    document.getElementById('btn-step').disabled=true;
+    clearMergeBody();renderTree(steps);hlCode(null);
   }
 }
 
-function renderBars(a, colors) {
-  const wrap = document.getElementById('bars-wrap');
-  const max = Math.max(...a, 1);
-  wrap.innerHTML = a.map((v, i) => `
-    <div class="bar ${colors[i]}" style="height:${Math.max(10, Math.round(v/max*140))}px">
-      <span class="bar-val">${v}</span>
-    </div>`).join('');
+function renderBars(a,colors){
+  const wrap=document.getElementById('bars-wrap');
+  const max=Math.max(...a,1);
+  wrap.innerHTML=a.map((v,i)=>`<div class="bar ${colors[i]}" style="height:${Math.max(10,Math.round(v/max*140))}px"><span class="bar-val">${v}</span></div>`).join('');
 }
 
-function showMergeVisual(left, right, result, li, ri) {
-  const mv = document.getElementById('merge-visual');
-  const leftCells = left.map((v, i) => `<div class="arr-cell ${i === li ? 'ptr' : i < (result.length - (ri >= 0 ? right.slice(0, ri).filter((_,j) => j < result.length - left.slice(0,li).length).length : 0) - li) ? 'taken' : ''}">${v}</div>`).join('');
-  const rightCells = right.map((v, i) => `<div class="arr-cell ${i === ri ? 'ptr' : ''}">${v}</div>`).join('');
-  const resultCells = result.map(v => `<div class="arr-cell result-cell">${v}</div>`).join('');
-
-  mv.innerHTML = `
-    <h3>Current merge operation</h3>
+function showMerge(left,right,result,li,ri){
+  document.getElementById('merge-body').innerHTML=`
     <div class="merge-arrays">
-      <div>
+      <div class="arr-group">
         <div class="arr-label">LEFT HALF</div>
         <div class="arr-cells">${left.map((v,i)=>`<div class="arr-cell ${i===li?'ptr':i<li?'taken':''}">${v}</div>`).join('')}</div>
       </div>
-      <div class="merge-arrow">+</div>
-      <div>
+      <div class="merge-op">+</div>
+      <div class="arr-group">
         <div class="arr-label">RIGHT HALF</div>
         <div class="arr-cells">${right.map((v,i)=>`<div class="arr-cell ${i===ri?'ptr':i<ri?'taken':''}">${v}</div>`).join('')}</div>
       </div>
-      <div class="merge-arrow">→</div>
-      <div>
+      <div class="merge-op">→</div>
+      <div class="arr-group">
         <div class="arr-label">RESULT</div>
-        <div class="arr-cells">${result.length ? result.map(v=>`<div class="arr-cell result-cell">${v}</div>`).join('') : '<span style="font-size:12px;color:var(--muted)">building...</span>'}</div>
+        <div class="arr-cells">${result.length?result.map(v=>`<div class="arr-cell result-cell">${v}</div>`).join(''):'<span style="font-size:10px;color:var(--muted);font-family:var(--mono)">building...</span>'}</div>
       </div>
     </div>`;
 }
 
-function clearMergeVisual() {
-  document.getElementById('merge-visual').innerHTML = `<h3>Current merge operation</h3><p style="font-size:13px;color:var(--muted)">Run the algorithm to see the merge step visualized here.</p>`;
+function clearMergeBody(){
+  document.getElementById('merge-body').innerHTML=`<p style="font-size:11px;color:var(--muted);font-family:var(--mono)">// run algorithm to see merge step live</p>`;
 }
 
-let logCount = 0;
-function addLog(msg, cls) {
+let logCount=0;
+function addLog(msg,cls){
   logCount++;
-  const box = document.getElementById('log-box');
-  const el = document.createElement('div');
-  el.className = 'log-entry ' + cls;
-  el.innerHTML = `<span class="step-num">${String(logCount).padStart(3,'0')}</span>${msg}`;
-  box.appendChild(el);
-  box.scrollTop = box.scrollHeight;
+  const box=document.getElementById('log-box');
+  const el=document.createElement('div');
+  el.className='log-entry '+cls;
+  el.innerHTML=`<span class="sn">${String(logCount).padStart(3,'0')}</span>${msg}`;
+  box.appendChild(el);box.scrollTop=box.scrollHeight;
 }
-function clearLog() { logCount = 0; document.getElementById('log-box').innerHTML = ''; }
+function clearLog(){logCount=0;document.getElementById('log-box').innerHTML='';}
 
-// Recursion tree
-function renderTree(allSteps) {
-  const canvas = document.getElementById('tree-canvas');
-  const ctx = canvas.getContext('2d');
-  const W = canvas.offsetWidth * devicePixelRatio;
-  const H = canvas.offsetHeight * devicePixelRatio;
-  canvas.width = W; canvas.height = H;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  const cw = canvas.offsetWidth, ch = canvas.offsetHeight;
-  ctx.clearRect(0, 0, cw, ch);
-
-  const a = parseArr();
-  if (!a.length) return;
-
-  // build tree nodes
-  const nodes = [];
-  function build(l, r, depth, x, xmin, xmax) {
-    if (l > r) return;
-    const node = {l, r, depth, x, y: 30 + depth * 60};
-    nodes.push(node);
-    if (l < r) {
-      const m = Math.floor((l+r)/2);
-      const lx = (xmin + x) / 2;
-      const rx = (x + xmax) / 2;
-      build(l, m, depth+1, lx, xmin, x);
-      build(m+1, r, depth+1, rx, x, xmax);
+function renderTree(allSteps){
+  const canvas=document.getElementById('tree-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=canvas.offsetWidth*devicePixelRatio;
+  canvas.height=canvas.offsetHeight*devicePixelRatio;
+  ctx.scale(devicePixelRatio,devicePixelRatio);
+  const cw=canvas.offsetWidth,ch=canvas.offsetHeight;
+  ctx.clearRect(0,0,cw,ch);
+  const a=parseArr();if(!a.length)return;
+  const nodes=[];
+  function build(l,r,depth,x,xmin,xmax){
+    if(l>r)return;
+    nodes.push({l,r,depth,x,y:28+depth*52});
+    if(l<r){const m=Math.floor((l+r)/2);build(l,m,depth+1,(xmin+x)/2,xmin,x);build(m+1,r,depth+1,(x+xmax)/2,x,xmax);}
+  }
+  build(0,a.length-1,0,cw/2,0,cw);
+  const splitDone=new Set(),mergeDone=new Set();
+  for(const s of allSteps){
+    if(s.type==='split')splitDone.add(`${s.l}-${s.r}`);
+    if(s.type==='merged'||s.type==='done')mergeDone.add(`${s.l}-${s.r}`);
+  }
+  for(const n of nodes){
+    if(n.l<n.r){
+      const m=Math.floor((n.l+n.r)/2);
+      const lc=nodes.find(x=>x.l===n.l&&x.r===m&&x.depth===n.depth+1);
+      const rc=nodes.find(x=>x.l===m+1&&x.r===n.r&&x.depth===n.depth+1);
+      ctx.strokeStyle='#2a2a2a';ctx.lineWidth=1;
+      if(lc){ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(lc.x,lc.y);ctx.stroke();}
+      if(rc){ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(rc.x,rc.y);ctx.stroke();}
     }
   }
-  build(0, a.length-1, 0, cw/2, 0, cw);
-
-  // determine which nodes are active/done from steps
-  const splitDone = new Set(), mergeDone = new Set();
-  for (const s of allSteps) {
-    if (s.type === 'split') splitDone.add(`${s.l}-${s.r}`);
-    if (s.type === 'merged' || s.type === 'done') mergeDone.add(`${s.l}-${s.r}`);
-  }
-
-  // draw edges
-  for (const node of nodes) {
-    if (node.l < node.r) {
-      const m = Math.floor((node.l + node.r)/2);
-      const left = nodes.find(n => n.l === node.l && n.r === m && n.depth === node.depth+1);
-      const right = nodes.find(n => n.l === m+1 && n.r === node.r && n.depth === node.depth+1);
-      ctx.strokeStyle = '#2a2a3a';
-      ctx.lineWidth = 1;
-      if (left) { ctx.beginPath(); ctx.moveTo(node.x, node.y); ctx.lineTo(left.x, left.y); ctx.stroke(); }
-      if (right) { ctx.beginPath(); ctx.moveTo(node.x, node.y); ctx.lineTo(right.x, right.y); ctx.stroke(); }
-    }
-  }
-
-  // draw nodes
-  for (const node of nodes) {
-    const key = `${node.l}-${node.r}`;
-    let fill = '#1a1a26', stroke = '#2a2a3a', textCol = '#7878a0';
-    if (mergeDone.has(key)) { fill = 'rgba(63,255,162,0.15)'; stroke = '#3fffa2'; textCol = '#3fffa2'; }
-    else if (splitDone.has(key)) { fill = 'rgba(124,111,255,0.15)'; stroke = '#7c6fff'; textCol = '#7c6fff'; }
-    const label = a.slice(node.l, node.r+1).join(',');
-    const w = Math.max(36, label.length * 8 + 16);
-    ctx.fillStyle = fill;
-    ctx.strokeStyle = stroke;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.roundRect(node.x - w/2, node.y - 14, w, 28, 4);
-    ctx.fill(); ctx.stroke();
-    ctx.fillStyle = textCol;
-    ctx.font = `700 11px 'Space Mono', monospace`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(label, node.x, node.y);
+  for(const n of nodes){
+    const key=`${n.l}-${n.r}`;
+    let fill='#111',stroke='#2a2a2a',tc='#444';
+    if(mergeDone.has(key)){fill='rgba(255,255,255,0.07)';stroke='#ffffff';tc='#ffffff';}
+    else if(splitDone.has(key)){fill='rgba(255,32,32,0.08)';stroke='#ff2020';tc='#ff2020';}
+    const label=a.slice(n.l,n.r+1).join(',');
+    const w=Math.max(30,label.length*7+14);
+    ctx.fillStyle=fill;ctx.strokeStyle=stroke;ctx.lineWidth=1;
+    ctx.beginPath();ctx.roundRect(n.x-w/2,n.y-12,w,24,2);ctx.fill();ctx.stroke();
+    ctx.fillStyle=tc;ctx.font=`700 10px 'Space Mono',monospace`;
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,n.x,n.y);
   }
 }
 
-// init
-window.addEventListener('load', () => {
-  reset();
-  window.addEventListener('resize', () => { if (!running) renderTree([]); });
-});
-
-const arr_input = document.getElementById('arr-input');
-arr_input.addEventListener('input', reset);
+window.addEventListener('load',()=>{reset();window.addEventListener('resize',()=>{if(!running)renderTree([]);});});
+arr_input.addEventListener('input',reset);
 </script>
 </body>
 </html>
